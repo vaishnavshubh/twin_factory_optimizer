@@ -1,31 +1,23 @@
-# Git and Docker metadata (keep Dockerfile in context for clarity; exclude heavy noise)
-.git
-.gitignore
-.github
-.dockerignore
+# Cloud Build / gcloud run --source upload ignore list.
+# Intentionally does NOT ignore optimizer/api/*.py (root .gitignore had a bare
+# ``main.py`` rule that previously omitted the ASGI module from the image).
 
-# Python cache / venvs
+.git
+.github
+.gitignore
+.idea
+.vscode
+.DS_Store
 __pycache__/
 **/__pycache__/
 *.pyc
-*.pyo
-*.pyd
 venv/
 .venv/
 env/
-
-# IDE / OS
-.idea/
-.vscode/
-.DS_Store
-
-# Secrets and local state
 *.env
 .env
-*.db
 optimizer/.stub_output/
 
-# Docs / notebooks / full OFacT framework (not required for optimizer stub API)
 docs/
 mkdocs.yml
 poetry.lock

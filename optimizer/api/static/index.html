@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Factory Digital Twin Optimizer</title>
+    <meta
+      name="description"
+      content="Portfolio demo: LangGraph multi-agent optimizer over an OFacT factory digital twin."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&family=Syne:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand-mark" href="/">Smart Factory <span>Digital Twin Optimizer</span></a>
+        <nav class="top-links" aria-label="Secondary">
+          <a href="/docs">API docs</a>
+          <a href="/health">Health</a>
+        </nav>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title">Smart Factory Digital Twin Optimizer</h1>
+        <p>
+          Multi-agent LangGraph flow that reads the OFacT Bicycle World twin,
+          predicts station bottlenecks, and proposes rerouting — built for
+          manufacturing systems roles.
+        </p>
+
+        <form id="optimize-form" class="cta-row">
+          <div class="project-field">
+            <label for="project-name">OFacT project</label>
+            <input
+              id="project-name"
+              name="project_name"
+              value="bicycle_world"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <button id="run-btn" class="btn btn-primary" type="submit">
+            Run optimization
+          </button>
+        </form>
+        <div id="status" class="status-line" aria-live="polite"></div>
+      </section>
+
+      <section id="results" class="results" aria-live="polite">
+        <article class="panel">
+          <h2>Run context</h2>
+          <p class="lede">Twin ingest and process sequence from the Bicycle World model.</p>
+          <div class="meta-row">
+            <div>project <strong id="meta-project">—</strong></div>
+            <div>mode <strong id="meta-mode">—</strong></div>
+          </div>
+          <div class="meta-row">
+            <div>sequence <strong id="meta-seq">—</strong></div>
+          </div>
+          <div id="util-grid" class="util-grid" aria-label="Resource utilization"></div>
+        </article>
+
+        <article class="panel">
+          <h2>Identified bottlenecks</h2>
+          <p class="lede">Resources at or above the utilization threshold.</p>
+          <ul id="bottleneck-list" class="list"></ul>
+        </article>
+
+        <article class="panel">
+          <h2>Proposed actions</h2>
+          <p class="lede">Rerouting and load-balancing decisions for OFacT resource agents.</p>
+          <ul id="action-list" class="list"></ul>
+        </article>
+      </section>
+
+      <p class="footer-note">
+        Demo defaults to OFacT Bicycle World
+        (<code>scenarios/current/models/twin/bicycle_factory.xlsx</code>) in stub mode.
+        Tutorial twin still works with project <code>tutorial</code>. Full API:
+        <a href="/docs">/docs</a>.
+      </p>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

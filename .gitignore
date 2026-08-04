@@ -3,8 +3,12 @@
 .idea/
 __pycache__/
 
-main.py
-helper.py
+# Scratch files at repo root only (do NOT ignore package modules)
+/main.py
+/helper.py
 .gitmodules
 # MkDocs build output
 site/
+
+# Optimizer stub write-backs (Step 1 OFacT connector)
+optimizer/.stub_output/
