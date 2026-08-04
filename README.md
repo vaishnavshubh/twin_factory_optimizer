@@ -1,261 +1,169 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a id="readme-top"></a>
+# Smart Factory Digital Twin Optimizer
 
-<div align="center">
+Multi-agent factory-floor optimization on top of an open-source digital twin.
 
-   <img src="docs/assets/imgs/ofact - logo.png" width="1395" height="679" />
-   <h3>Open Factory Twin</h3> 
-   <h4>Open source Digital Twin Framework for Production and Logistics</h4>
+This portfolio project reads plant twin state, detects workstation bottlenecks, and proposes rerouting actions through a LangGraph agent pipeline — exposed as a FastAPI service and deployable to Google Cloud Run.
 
-  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-</div>
-
-<p align="center">
-  <br />
-  <a href="https://openfactorytwin.github.io/ofact/"><strong>Explore the docs »</strong></a>
-  <br />
-  <br />
-  <a href="https://www.isst.fraunhofer.de/de/abteilungen/industrial-manufacturing/technologien/OFacT.html">View Demo</a>
-  ·
-  <a href="https://github.com/OpenFactoryTwin/ofact/issues/new?assignees=&labels=Bug%2CNeeds+Triage&projects=&template=bug_report.yml&title=BUG%3A+">Report Bug</a>
-  ·
-  <a href="https://github.com/OpenFactoryTwin/ofact/issues/new?assignees=&labels=Enhancement%2CNeeds+Triage&projects=&template=feature_request.yml&title=%F0%9F%9A%80+ENH%3A+">Request Feature</a>
-</p>
-
-***
-
-## Table of Contents
-
-- [About](#about)
-- [Structure](#structure)
-- [Getting Started](#getting-started)
-    - [System Prerequisites](#system-prerequisites)
-    - [Quick Start](#quick-start)
-- [Release Notes](#release-notes)
-- [Contributing](#contributing)
-- [License](#license)
-- [Developers](#developers)
-
-***
-
-## About
-
-The *Open Factory Twin* (OFacT) project aims to provide a digital twin for production and logistics environments.
-Digital Twins (DT) represent their environment as a virtual model of all relevant parts of the real system. OFact 
-is meant to support the design, planning and operation control of discrete material flow systems and thus supporting 
-management of the system during the whole life cycle.     
-
-Coming from the **challenges** such as ...
-
-* shorter production life cycles
-* frequently changing demands
-* complex supply chains
-* increasing number of possible product variants
-* regulations, legal requirements and restrictions
-
-... companies are faced constantly with a complex decision that often needs a dynamic evaluation and comparison of various
-scenarios. Often detailed simulation models are the only way to get a reliable evaluation of costs and performance. Data 
-of the real world has to be integrated regularly into the simulation models to keep them up-to-date.  
-In the design (or re-design) phase of a production system, the digital twin can be used to simulate different design 
-alternatives and evaluate them even before the real system exists. When the real system is in operation, the digital twin
-can be used in an iterative way between planning orders and resources and controlling the plan during operations dealing 
-with disruptions in real time.
-
-OFacT is based on a general state model that describes the state of the factory and the possible behaviors and can be 
-used for all kinds of discrete material flow systems (e.g. assembly lines, flexible matrix production, job shops,
-warehouses or even supply networks). 
-The model consists of the following basic elements:
-* **orders** (that describe the "customer" demand)
-* **entities** (**resources** and **parts**) that describe the physical objects in the system with parts being
-transformed based on processes that are executed by reusable resources 
-* **processes** define the possible transformation of parts (and sometimes resources) in time, space physical attributes 
-and quality
-
-While the processes describe the possibility space of the material flow system, (planned and actual) **process executions** 
-describe the concrete transformation in the past, present and future and can be seen as event logs that capture the 
-dynamic behavior of the system. Process executions can be created by the real system - planned process execution are 
-generated based on data from planning systems such as ERP or APS systems while actual process executions are generated 
-based of sensor or event data. Planned process executions can also be created by the **multi-agent system** that controls 
-the state model. The control logic of the digital twin is realised by agent behaviours and thus separated from the static
-state model allowing for complex and flexible control behaviours. The separation of possibility space and actual behavior
-as well as the separation of state mode and agent-based control allows for a flexible and modular design of the digital
-twin that can be adapted to the specific requirements of the production system. Even more it facilitates the learning
-of the model from the data of the real system. 
-
-<div align="center">
-  <img src="ofact/docs/assets/imgs/OFacT_Ecosystem.png" width="1000" height="600" />
-  <h3>Digital Twin Ecosystem</h3> 
-</div>
-
-The OFacT framework consists of the following super components:
-- **Environment**: provides components to interact with all kinds of environments (real and virtual) and to integrate data
-  - **Data Integration**: provides tools to integrate data into the digital twin including consistency checks and update
-  mechanisms with the use of Machine Learning/ Artificial Intelligence technics for faster and more accurate digital twin model generation
-  - **Work Instruction**: provides tools to pass work instructions (planned process executions) back to the physical 
-  world (closed loop system)
-  - **Simulation**: is a virtual environment, that mimics the behavior of the real world and can be used to evaluate
-    different scenarios or produce forecasts
-  - **Data Space Connector**: provides the tools to connect the digital twin to the data space and to share the digital
-    twin with other companies
-- **Digital Twin**: provides the state model, the agent control
-  - **State Model**: describes the state of the factory and the possible behaviors as well a passed and planned transformations
-  - **Agent Control**: provides the control logic of the digital twin based on order and resource agents
-- **Planning Services**: provides tools to generate the state model and to create and evaluate scenarios
-  - **Scenario Generation**: provides the capabilities to create difference scenarios based on manual parameter variation, 
-  optimization or even Artificial Intelligence such as reinforcement learning agents or generative models
-  - **Scenario Analytics**: provides the tools to determine KPI's based on the state model, visualize and compare them
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-***
-
-## Structure
-
-This project uses a [monolithic repository approach](https://en.wikipedia.org/wiki/Monorepo) and
-consists of different parts that are located in different subfolders of the `ofact` folder. 
-Examples are use case-specific models and adaptions (currently only the twin models) 
-are offered in the `projects` folder.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-***
-
-## Getting Started
-
-Detailed getting started guides are described for every component in their dedicated `README`
-file, located in the corresponding subfolders.
-
-### System Prerequisites
-
-The following things are necessary to run this application:
-
-- tested on Python 3.12
-- requirements.txt
-
-### Quick Start
-
-The current release of the open factory twin contains 
-- the data model (state model component)
-- (auto) model generation
-- data integration
-- the agent control
-- scenario analytics
-The state model can be filled with two sample use cases that can be found in the `projects` folder:
-The models are provided in the `{project_name}/model/twin/` folder, modeled in Excel files.
-
-#### Tutorial
-
-The tutorial shows a small example shop floor of a board game factory 
-that contains a subset of the elements existing in the state model.
-In this example, three parts are taken from a warehouse and assembled by a worker in a packing station.
-
-In this tutorial four topics are introduced:
-1. Modelling
-2. Data Integration
-3. Analytics
-4. Simulation
-
-To start with the tutorial, click [here](projects/tutorial/A%20Warm%20Welcome%20to%20OFacT!.ipynb).
-
-Some parts of the tutorial already contains the bicycle world, a more complex scenario ...
-
-#### Bicycle World
-
-A more advanced scenario in the context of Industrie 4.0 is offered with the bicycle world. 
-Here, a modular and flexible assembly produces customized bicycles. 
-The assembly stations can execute one or more processes (standardized),  
-and the main product has a flexible assembly step sequences (routing flexibility), 
-restricted only by the assembly priority chart of each product.
-This projects contains two variants, one with and one without material supply.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**Live demo:** [smart-factory-optimizer on Cloud Run](https://smart-factory-optimizer-dczdrdacca-uc.a.run.app/)
 
 ---
 
-## Release Notes
+## What it does
 
-As stated before, the first release, contains only the data model (state model).
-However, soon further parts of the project will become open source.
-The aim is to offer an example case (bicycle world) that can be simulated (agent control) 
-and analyzed (scenario analytics).
+Manufacturing plants face shifting demand, uneven station load, and material waits that are hard to diagnose from static dashboards alone. This system:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+1. **Ingests** digital-twin floor state (utilization, assembly sequence, inventory context)
+2. **Predicts** bottlenecks above a configurable utilization threshold
+3. **Proposes** concrete actions (load balancing, material staging, sequence tweaks)
+4. **Serves** results via REST + a lightweight browser demo
 
----
-
-## Publications
-
-Below you will find an excerpt from publications created as part of the OFacT working group:
-
-**[Integrating Scheduling of Logistic Support Processes in Agent-Based Industry 4.0 Assembly Simulation](https://doi.org/10.1109/WSC60868.2023.10408413)**  
-*Freiter, Schwede*  
-Winter Simulation Conference (WSC), 2023
-
-**[Learning Simulation-Based Digital Twins for Discrete Material Flow Systems: A Review](https://doi.org/10.1109/WSC63780.2024.10838729)**  
-*Schwede, Fischer*  
-Winter Simulation Conference (WSC), 2024
-
-**[Automated Adaptation of Digital Twins for Production Line Design by Adapting Existing Models Through LLM-Guided Expert Interviews](https://doi.org/10.25368/2025.247)**  
-*Schipper, Schwede*  
-21. ASIM-Fachtagung Simulation in Produktion und Logistik, 2025
-
-📖 **Full publication list**: See [PUBLICATIONS.md](PUBLICATIONS.md)  
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Default scenario: OFacT **Bicycle World** (`bicycle_factory.xlsx`) — a multi-station assembly plant (body kit → gear/brakes → lighting/pedals/saddle → wheels → painting).
 
 ---
 
-## Contributing
+## Architecture
 
-Contributions to this project are greatly appreciated! 
-For more details, see the `CONTRIBUTING.md` file.
+```text
+┌─────────────────┐     ┌──────────────────────────────────────┐
+│  Digital Twin   │────▶│  LangGraph agents                    │
+│  (OFacT Excel / │     │  ofact_reader → bottleneck_predictor │
+│   stub connector)│     │  → rerouting_agent                   │
+└─────────────────┘     └──────────────────┬───────────────────┘
+                                           │
+                                           ▼
+                                    ┌──────────────┐
+                                    │   FastAPI    │
+                                    │  /optimize   │
+                                    │  / (demo UI) │
+                                    └──────┬───────┘
+                                           │
+                                           ▼
+                                    Google Cloud Run
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+| Layer | Location | Role |
+|-------|----------|------|
+| Twin framework | `ofact/` | Open Factory Twin (upstream) — state model, projects, simulation |
+| Optimizer | `optimizer/` | LangGraph orchestration, connector, API, demo UI |
+| Deploy | `Dockerfile`, `.gcloudignore` | Multi-stage image → Cloud Run |
 
----
-
-## License
-
-This work is licensed under the Apache 2.0 license. 
-See `LICENSE` file for more information.
-
-Parts of the project are created within the scope of
-the [Center of Excellence Logistics and It](https://ce-logit.com/) - Nationales Leistungszentrum Logistik und IT.
-
-<div align="center">
-   <img src="docs/assets/imgs/leistungszentrum-600x200.png" width="600" height="200" />
-</div>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
----
-
-## Developers
-
-- Christian Schwede ([HSBI](https://www.hsbi.de/en) | [Fraunhofer ISST](https://www.isst.fraunhofer.de/en.html))
-- Jan Cirullies ([FH Dortmund](https://www.fh-dortmund.de/index.php?loc=en) | [Fraunhofer ISST](https://www.isst.fraunhofer.de/en.html))
-- Adrian Freiter ([Fraunhofer ISST](https://www.isst.fraunhofer.de/en.html))
-
-- Roman Sliwinski ([HSBI](https://www.hsbi.de/en))
-- Jannik Hartog ([Fraunhofer ISST](https://www.isst.fraunhofer.de/en.html))
-
-- Niklas Müller ([Fraunhofer ISST](https://www.isst.fraunhofer.de/en.html))
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+The optimizer sits **beside** OFacT; it does not replace SPADE shop-floor agents or the Flask analytics API.
 
 ---
 
-If you have any further questions, please do not hesitate to contact us:
+## Stack
 
-- christian.schwede@isst.fraunhofer.de
-- adrian.freiter@isst.fraunhofer.de
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+- **Python 3.12** · **LangGraph** · **FastAPI** · **Uvicorn**
+- **OFacT** digital twin (Apache 2.0) — [OpenFactoryTwin/ofact](https://github.com/OpenFactoryTwin/ofact)
+- **Docker** · **Google Cloud Run** · **Cloud Build** / Artifact Registry
 
 ---
 
-## Notice
-The documentation part of this work is 
-licensed under the [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/legalcode) while the software part is 
-licensed under Apache 2.0.
+## Quick start (local)
+
+```bash
+# from repo root
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r optimizer/requirements.txt
+
+export PYTHONPATH=.
+export OFACT_MODE=stub
+export OFACT_PROJECT=bicycle_world
+
+uvicorn optimizer.api.app:app --host 0.0.0.0 --port 8080
+```
+
+Then open:
+
+- Demo UI — http://127.0.0.1:8080/
+- OpenAPI — http://127.0.0.1:8080/docs
+- Health — http://127.0.0.1:8080/health
+
+```bash
+curl -s -X POST http://127.0.0.1:8080/optimize \
+  -H 'Content-Type: application/json' \
+  -d '{"project_name":"bicycle_world"}' | python3 -m json.tool
+```
+
+---
+
+## Agent pipeline
+
+Shared state: `FactoryState` (`optimizer/models/factory_state.py`)
+
+| Node | Responsibility |
+|------|----------------|
+| `ofact_reader` | Load utilization + assembly sequence from twin/stub |
+| `bottleneck_predictor` | Flag stations above `BOTTLENECK_THRESHOLD` (default 0.80) |
+| `rerouting_agent` | Propose balance / staging / sequence actions |
+
+```bash
+PYTHONPATH=. python3 -c "
+from optimizer.agents import run_optimize
+r = run_optimize(project_name='bicycle_world')
+print(r['identified_bottlenecks'])
+print(r['proposed_actions'])
+"
+```
+
+---
+
+## Configuration
+
+| Variable | Default | Meaning |
+|----------|---------|---------|
+| `OFACT_MODE` | `stub` | `stub` = Excel light-parse (no SPADE); `live` reserved |
+| `OFACT_PROJECT` | `bicycle_world` | Twin project under `projects/` |
+| `OFACT_STATE_MODEL_FILE` | `bicycle_factory.xlsx` | Static twin workbook |
+| `OFACT_TWIN_DIR` | `scenarios/current/models/twin` | Relative twin folder |
+| `BOTTLENECK_THRESHOLD` | `0.80` | Utilization cutoff for bottlenecks |
+| `PORT` | `8080` | Cloud Run / local listen port |
+
+Secrets (e.g. `OPENAI_API_KEY` if you later add LLM nodes) must come from the environment — never commit them.
+
+---
+
+## Deploy to Cloud Run
+
+See [`optimizer/CLOUD_RUN.md`](optimizer/CLOUD_RUN.md) for full steps.
+
+```bash
+gcloud run deploy smart-factory-optimizer \
+  --source . \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --port 8080 \
+  --memory 2Gi \
+  --set-env-vars "OFACT_MODE=stub,OFACT_PROJECT=bicycle_world,OFACT_STATE_MODEL_FILE=bicycle_factory.xlsx,OFACT_TWIN_DIR=scenarios/current/models/twin"
+```
+
+---
+
+## Repository layout
+
+```text
+.
+├── optimizer/           # Portfolio application (agents, API, UI, config)
+│   ├── agents/          # LangGraph nodes + compiled graph
+│   ├── api/             # FastAPI app + static demo
+│   ├── infrastructure/  # Config + OFacT connector
+│   ├── models/          # FactoryState schema
+│   ├── CLOUD_RUN.md
+│   └── README.md        # Deeper package notes
+├── ofact/               # Upstream Open Factory Twin framework
+├── projects/            # Twin Excel models (bicycle_world, tutorial, …)
+├── Dockerfile
+└── requirements via optimizer/requirements.txt
+```
+
+---
+
+## Attribution
+
+Built on **[Open Factory Twin (OFacT)](https://github.com/OpenFactoryTwin/ofact)** by Fraunhofer ISST / OpenFactoryTwin contributors, licensed under Apache 2.0. This repository adds the `optimizer/` orchestration layer for portfolio demonstration; OFacT remains the digital-twin foundation.
+
+---
+
+## Author
+
+**Shubh Vaishnav** — Data Engineering / AI systems portfolio project.
