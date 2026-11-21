@@ -5,7 +5,7 @@ They fail because the dashboard doesn’t tell you **what to do next**.
 
 This project takes a plant digital twin, finds overloaded stations, and turns that into concrete moves — shift work, stage kits, reallocate mobile resources — through a small multi-agent pipeline you can hit as an API.
 
-**Try it:** [live demo on Cloud Run](https://smart-factory-optimizer-dczdrdacca-uc.a.run.app/)
+**Try it:** [live demo on Cloud Run](https://smart-factory-optimizer-xmdsqty7zq-uc.a.run.app/)
 
 ---
 
